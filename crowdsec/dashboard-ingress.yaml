@@ -1,0 +1,18 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: crowdsec
+  namespace: crowdsec
+  annotations: 
+    kubernetes.io/ingress.class: traefik-external
+spec:
+  entryPoints: 
+    - websecure
+  routes:
+    - match: Host(`crowdsec.local.izroll.dev`)
+      kind: Rule
+      services:
+        - name: crowdsec-service
+          port: 8080
+  tls:
+    secretName: local-izroll-dev-tls

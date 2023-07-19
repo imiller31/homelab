@@ -1,0 +1,66 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bazarr
+  namespace: default
+spec:
+  progressDeadlineSeconds: 600
+  replicas: 1
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app.kubernetes.io/instance: k8smediaserver-sample
+      app.kubernetes.io/name: k8s-mediaserver
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: bazarr
+        app.kubernetes.io/instance: k8smediaserver-sample
+        app.kubernetes.io/name: k8s-mediaserver
+    spec:
+      containers:
+      - image: linuxserver/bazarr:latest
+        imagePullPolicy: Always
+        name: bazarr
+        env:
+        - name: PUID
+          value: "1000"
+        - name: PGID
+          value: "1000"
+        ports:
+        - containerPort: 6767
+          name: bazarr
+          protocol: TCP
+        readinessProbe:
+          failureThreshold: 3
+          initialDelaySeconds: 5
+          periodSeconds: 10
+          successThreshold: 1
+          tcpSocket:
+            port: 6767
+          timeoutSeconds: 1
+        resources: {}
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+        volumeMounts:
+        - mountPath: /config
+          name: mediaserver-volume
+          subPath: config/bazarr
+        - mountPath: /movies
+          name: mediaserver-volume
+          subPath: media/movies
+        - mountPath: /tv
+          name: mediaserver-volume
+          subPath: media/tv
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 30
+      volumes:
+      - name: mediaserver-volume
+        persistentVolumeClaim:
+          claimName: mediaserver-pvc-redux

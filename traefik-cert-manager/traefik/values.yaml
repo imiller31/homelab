@@ -9,6 +9,11 @@ additionalArguments:
   - "--providers.kubernetescrd.allowexternalnameservices"
   - "--experimental.plugins.htransformation.modulename=github.com/tomMoulard/htransformation"
   - "--experimental.plugins.htransformation.version=v0.2.7"
+  - "--experimental.plugins.bouncer.moduleName=github.com/maxlerebourg/crowdsec-bouncer-traefik-plugin"
+  - "--experimental.plugins.bouncer.version=v1.1.7"
+  - "--entrypoints.web.http.middlewares=traefik-bouncer@kubernetescrd"
+  - "--entrypoints.websecure.http.middlewares=traefik-bouncer@kubernetescrd"
+  - "--providers.kubernetescrd"
 
 deployment:
   enabled: true
@@ -17,14 +22,15 @@ deployment:
   podAnnotations: {}
   additionalContainers: []
   initContainers: []
-  additionalVolumes:
-  - name: plugins
-  
-additionalVolumes:
-- name: plugins
-additionalVolumeMounts:
-- name: plugins
-  mountPath: /plugins-storage
+  additionalVolumes: []
+
+experimental:
+  plugins:
+    enabled: true
+volumes:
+  - name: crowdsec-bouncer-tls
+    mountPath: /etc/traefik/crowdsec-certs/
+    type: secret
 
 ports:
   web:
@@ -42,11 +48,16 @@ providers:
     enabled: true
     ingressClass: traefik-external
     allowExternalNameServices: true
+    allowCrossNamespace: true
   kubernetesIngress:
     enabled: true
     allowExternalNameServices: true
     publishedService:
       enabled: false
+
+log: 
+  access: 
+    enabled: true
 
 rbac:
   enabled: true
