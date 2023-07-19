@@ -1,0 +1,134 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    deployment.kubernetes.io/revision: "4"
+    meta.helm.sh/release-name: k8smediaserver-sample
+    meta.helm.sh/release-namespace: default
+  creationTimestamp: "2023-07-16T03:07:34Z"
+  generation: 4
+  labels:
+    app.kubernetes.io/instance: k8smediaserver-sample
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: k8s-mediaserver
+    app.kubernetes.io/version: 1.16.0
+    helm.sh/chart: k8s-mediaserver-0.7.0
+  name: transmission
+  namespace: default
+  ownerReferences:
+  - apiVersion: charts.kubealex.com/v1
+    blockOwnerDeletion: true
+    controller: true
+    kind: K8SMediaserver
+    name: k8smediaserver-sample
+    uid: f52bdd6a-8840-4acc-9309-f004c4e68b14
+  resourceVersion: "1153705"
+  uid: 2ac5a722-e1ba-4d4b-b639-4e1afedffcb1
+spec:
+  progressDeadlineSeconds: 600
+  replicas: 1
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app.kubernetes.io/instance: k8smediaserver-sample
+      app.kubernetes.io/name: k8s-mediaserver
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      annotations:
+        kubectl.kubernetes.io/restartedAt: "2023-07-17T03:08:53-04:00"
+      creationTimestamp: null
+      labels:
+        app: transmission
+        app.kubernetes.io/instance: k8smediaserver-sample
+        app.kubernetes.io/name: k8s-mediaserver
+    spec:
+      containers:
+      - envFrom:
+        - configMapRef:
+            name: transmission-config
+        image: docker.io/linuxserver/transmission:latest
+        imagePullPolicy: Always
+        name: k8s-mediaserver
+        ports:
+        - containerPort: 9091
+          name: trans-port
+          protocol: TCP
+        - containerPort: 51413
+          name: trans-peer-tcp
+          protocol: TCP
+        - containerPort: 51413
+          name: trans-peer-udp
+          protocol: UDP
+        readinessProbe:
+          failureThreshold: 3
+          initialDelaySeconds: 5
+          periodSeconds: 10
+          successThreshold: 1
+          tcpSocket:
+            port: 9091
+          timeoutSeconds: 1
+        resources: {}
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+        volumeMounts:
+        - mountPath: /config
+          name: mediaserver-volume
+          subPath: config/transmission
+        - mountPath: /downloads
+          name: mediaserver-volume
+          subPath: downloads
+      dnsPolicy: ClusterFirst
+      initContainers:
+      - command:
+        - /init-transmission/init-transmission.sh
+        image: docker.io/ubuntu:groovy
+        imagePullPolicy: IfNotPresent
+        name: config-transmission
+        resources: {}
+        securityContext:
+          runAsGroup: 1000
+          runAsUser: 1000
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+        volumeMounts:
+        - mountPath: /init-transmission
+          name: init-files-transmission
+        - mountPath: /transmission-config
+          name: mediaserver-volume
+          subPath: config/transmission
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      terminationGracePeriodSeconds: 30
+      volumes:
+      - name: mediaserver-volume
+        persistentVolumeClaim:
+          claimName: mediaserver-pvc-redux
+      - configMap:
+          defaultMode: 493
+          name: init-transmission-cm
+        name: init-files-transmission
+status:
+  availableReplicas: 1
+  conditions:
+  - lastTransitionTime: "2023-07-17T05:31:51Z"
+    lastUpdateTime: "2023-07-17T05:31:51Z"
+    message: Deployment has minimum availability.
+    reason: MinimumReplicasAvailable
+    status: "True"
+    type: Available
+  - lastTransitionTime: "2023-07-16T03:07:34Z"
+    lastUpdateTime: "2023-07-17T07:12:24Z"
+    message: ReplicaSet "transmission-79fdd9d759" has successfully progressed.
+    reason: NewReplicaSetAvailable
+    status: "True"
+    type: Progressing
+  observedGeneration: 4
+  readyReplicas: 1
+  replicas: 1
+  updatedReplicas: 1

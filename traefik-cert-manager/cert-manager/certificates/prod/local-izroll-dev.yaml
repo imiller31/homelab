@@ -1,0 +1,15 @@
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: local-izroll-dev
+  namespace: default
+spec:
+  secretName: local-izroll-dev-tls
+  issuerRef:
+    name: letsencrypt-production
+    kind: ClusterIssuer
+  commonName: "*.local.izroll.dev"
+  dnsNames:
+  - "local.izroll.dev"
+  - "*.local.izroll.dev"

@@ -1,0 +1,43 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: plex-external
+  namespace: default
+spec:
+  type: ExternalName
+  # FQDN of the external API
+  externalName: 66.66.0.66
+  ports:
+    - port: 32400
+  selector:
+    app.kubernetess.io/instance: traefik
+    app.kubernetes.io/name: traefik
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: plex
+  namespace: default
+  annotations: 
+    kubernetes.io/ingress.class: traefik-external
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`www.plex.lab.izroll.dev`)
+      kind: Rule
+      services:
+        - name: plex-external
+          port: 32400
+      middlewares:
+        - name: default-headers
+    - match: Host(`plex.lab.izroll.dev`)
+      kind: Rule
+      services:
+        - name: plex-external
+          port: 32400
+      middlewares:
+        - name: default-headers
+  tls:
+    secretName: lab-izroll-dev-tls

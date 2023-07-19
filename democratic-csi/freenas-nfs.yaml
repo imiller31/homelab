@@ -1,0 +1,70 @@
+csiDriver:
+  name: "org.democratic-csi.nfs"
+
+storageClasses:
+- name: freenas-nfs-csi
+  defaultClass: false
+  reclaimPolicy: Retain
+  volumeBindingMode: Immediate
+  allowVolumeExpansion: true
+  parameters:
+    fsType: nfs
+      
+  mountOptions:
+  - noatime
+  - nfsvers=4
+  secrets:
+    provisioner-secret:
+    controller-publish-secret:
+    node-stage-secret:
+    node-publish-secret:
+    controller-expand-secret:
+
+driver:
+  config:
+    node:
+      mount:
+        checkFileSystem:
+          enabled: true
+          xfs:
+            enabled: true
+          ext4:
+            enabled: true  
+          btrfs:
+            enabled: true
+    driver: freenas-nfs
+    instance_id:
+    httpConnection:
+      protocol: http
+      host: <ip>
+      port: 80
+      # This is the API key that we generated previously
+      apiKey: <api-key>
+      username: root
+      allowInsecure: true
+      apiVersion: 2
+    sshConnection:
+      host: <ip>
+      port: 22
+      username: root
+      # This is the SSH key that we generated for passwordless authentication
+      privateKey: |
+        <key>
+    zfs:
+      # Make sure to use the storage pool that was created previously
+      datasetParentName: djl/k8s/nfs/vols
+      detachedSnapshotsDatasetParentName: djl/k8s/nfs/snaps
+      datasetEnableQuotas: true
+      datasetEnableReservation: false
+      datasetPermissionsMode: "0777"
+      datasetPermissionsUser: 0
+      datasetPermissionsGroup: 0
+    nfs:
+      shareHost: <ip>
+      shareAlldirs: false
+      shareAllowedHosts: []
+      shareAllowedNetworks: []
+      shareMaprootUser: root
+      shareMaprootGroup: wheel
+      shareMapallUser: ""
+      shareMapallGroup: ""

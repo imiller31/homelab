@@ -1,0 +1,94 @@
+apiVersion: v1
+data:
+  init-sabnzbd.sh: |
+    #!/bin/bash
+    echo "### Initializing config ###"
+    if [ ! -f /sabnzbd-config/settings.json ]; then
+      cp -n /init-sabnzbd/sabnzbd.ini /sabnzbd-config/sabnzbd.ini
+      echo "### No configuration found, intialized with default settings ###"
+    fi
+  sabnzbd.ini: "__version__ = 19\n__encoding__ = utf-8\n[misc]\npre_script = None\nqueue_complete
+    = \"\"\nqueue_complete_pers = 0\nbandwidth_perc = 100\nrefresh_rate = 0\ninterface_settings
+    = \"\"\nqueue_limit = 20\nconfig_lock = 0\nsched_converted = 0\nnotified_new_skin
+    = 0\ndirect_unpack_tested = 0\ncheck_new_rel = 1\nauto_browser = 1\nlanguage =
+    en\nenable_https_verification = 1\nhost = ::\nport = 8080\nhttps_port = \"\"\nusername
+    = \"\"\npassword = \"\"\nbandwidth_max = \"\"\ncache_limit = 1G\nweb_dir = Glitter\nweb_color
+    = \"\"\nhttps_cert = server.cert\nhttps_key = server.key\nhttps_chain = \"\"\nenable_https
+    = 0\ninet_exposure = 0\napi_key = 7a50bedb4f764603bab47212c7a16ec4\nnzb_key =
+    c7378d3a9b024117baacb21de005b1a6\npermissions = \"\"\ndownload_dir = /downloads/sabnzbd/incomplete\ndownload_free
+    = \"\"\ncomplete_dir = /downloads/sabnzbd/complete\ncomplete_free = \"\"\nfulldisk_autoresume
+    = 0\nscript_dir = \"\"\nnzb_backup_dir = \"\"\nadmin_dir = admin\ndirscan_dir
+    = \"\"\ndirscan_speed = 5\npassword_file = \"\"\nlog_dir = logs\nmax_art_tries
+    = 3\nload_balancing = 2\ntop_only = 0\nsfv_check = 1\nquick_check_ext_ignore =
+    nfo, sfv, srr\nscript_can_fail = 0\nenable_recursive = 1\nflat_unpack = 0\npar_option
+    = \"\"\npre_check = 0\nnice = \"\"\nwin_process_prio = 3\nionice = \"\"\nfail_hopeless_jobs
+    = 1\nfast_fail = 1\nauto_disconnect = 1\nno_dupes = 0\nno_series_dupes = 0\nseries_propercheck
+    = 1\npause_on_pwrar = 1\nignore_samples = 0\ndeobfuscate_final_filenames = 0\nauto_sort
+    = \"\"\ndirect_unpack = 0\ndirect_unpack_threads = 3\npropagation_delay = 0\nfolder_rename
+    = 1\nreplace_spaces = 0\nreplace_dots = 0\nsafe_postproc = 1\npause_on_post_processing
+    = 0\nenable_all_par = 0\nsanitize_safe = 0\ncleanup_list = ,\nunwanted_extensions
+    = ,\naction_on_unwanted_extensions = 0\nunwanted_extensions_mode = 0\nnew_nzb_on_failure
+    = 0\nhistory_retention = 0\nenable_meta = 1\nquota_size = \"\"\nquota_day = \"\"\nquota_resume
+    = 0\nquota_period = m\nrating_enable = 0\nrating_host = \"\"\nrating_api_key =
+    \"\"\nrating_filter_enable = 0\nrating_filter_abort_audio = 0\nrating_filter_abort_video
+    = 0\nrating_filter_abort_encrypted = 0\nrating_filter_abort_encrypted_confirm
+    = 0\nrating_filter_abort_spam = 0\nrating_filter_abort_spam_confirm = 0\nrating_filter_abort_downvoted
+    = 0\nrating_filter_abort_keywords = \"\"\nrating_filter_pause_audio = 0\nrating_filter_pause_video
+    = 0\nrating_filter_pause_encrypted = 0\nrating_filter_pause_encrypted_confirm
+    = 0\nrating_filter_pause_spam = 0\nrating_filter_pause_spam_confirm = 0\nrating_filter_pause_downvoted
+    = 0\nrating_filter_pause_keywords = \"\"\nenable_tv_sorting = 0\ntv_sort_string
+    = \"\"\ntv_categories = tv,\nenable_movie_sorting = 0\nmovie_sort_string = \"\"\nmovie_sort_extra
+    = -cd%1\nmovie_extra_folder = 0\nmovie_categories = movies,\nenable_date_sorting
+    = 0\ndate_sort_string = \"\"\ndate_categories = tv,\nschedlines = ,\nrss_rate
+    = 60\nampm = 0\nreplace_illegal = 1\nstart_paused = 0\nenable_par_cleanup = 1\nprocess_unpacked_par2
+    = 1\nenable_unrar = 1\nenable_unzip = 1\nenable_7zip = 1\nenable_filejoin = 1\nenable_tsjoin
+    = 1\noverwrite_files = 0\nignore_unrar_dates = 0\nbackup_for_duplicates = 1\nempty_postproc
+    = 0\nwait_for_dfolder = 0\nrss_filenames = 0\napi_logging = 1\nhtml_login = 1\nosx_menu
+    = 1\nosx_speed = 1\nwarn_dupl_jobs = 1\nhelpfull_warnings = 1\nkeep_awake = 1\nwin_menu
+    = 1\nallow_incomplete_nzb = 0\nenable_broadcast = 1\nipv6_hosting = 0\nfixed_ports
+    = 1\napi_warnings = 1\ndisable_api_key = 0\nno_penalties = 0\nx_frame_options
+    = 1\nrequire_modern_tls = 0\nnum_decoders = 3\nrss_odd_titles = nzbindex.nl/,
+    nzbindex.com/, nzbclub.com/\nreq_completion_rate = 100.2\nselftest_host = self-test.sabnzbd.org\nmovie_rename_limit
+    = 100M\nepisode_rename_limit = 20M\nsize_limit = 0\nshow_sysload = 2\nhistory_limit
+    = 10\nwait_ext_drive = 5\nmax_foldername_length = 246\nnomedia_marker = \"\"\nipv6_servers
+    = 1\nurl_base = /sabnzbd\nhost_whitelist = \nlocal_ranges = ,\nmax_url_retries
+    = 10\ndownloader_sleep_time = 10\nssdp_broadcast_interval = 15\nemail_server =
+    \"\"\nemail_to = ,\nemail_from = \"\"\nemail_account = \"\"\nemail_pwd = \"\"\nemail_endjob
+    = 0\nemail_full = 0\nemail_dir = \"\"\nemail_rss = 0\nemail_cats = *,\n[logging]\nlog_level
+    = 1\nmax_log_size = 5242880\nlog_backups = 5\n[ncenter]\nncenter_enable = 0\nncenter_cats
+    = *,\nncenter_prio_startup = 1\nncenter_prio_download = 0\nncenter_prio_pause_resume
+    = 0\nncenter_prio_pp = 0\nncenter_prio_complete = 1\nncenter_prio_failed = 1\nncenter_prio_disk_full
+    = 1\nncenter_prio_new_login = 0\nncenter_prio_warning = 0\nncenter_prio_error
+    = 0\nncenter_prio_queue_done = 1\nncenter_prio_other = 1\n[acenter]\nacenter_enable
+    = 0\nacenter_cats = *,\nacenter_prio_startup = 0\nacenter_prio_download = 0\nacenter_prio_pause_resume
+    = 0\nacenter_prio_pp = 0\nacenter_prio_complete = 1\nacenter_prio_failed = 1\nacenter_prio_disk_full
+    = 1\nacenter_prio_new_login = 0\nacenter_prio_warning = 0\nacenter_prio_error
+    = 0\nacenter_prio_queue_done = 1\nacenter_prio_other = 1\n[ntfosd]\nntfosd_enable
+    = 1\nntfosd_cats = *,\nntfosd_prio_startup = 1\nntfosd_prio_download = 0\nntfosd_prio_pause_resume
+    = 0\nntfosd_prio_pp = 0\nntfosd_prio_complete = 1\nntfosd_prio_failed = 1\nntfosd_prio_disk_full
+    = 1\nntfosd_prio_new_login = 0\nntfosd_prio_warning = 0\nntfosd_prio_error = 0\nntfosd_prio_queue_done
+    = 1\nntfosd_prio_other = 1\n[prowl]\nprowl_enable = 0\nprowl_cats = *,\nprowl_apikey
+    = \"\"\nprowl_prio_startup = -3\nprowl_prio_download = -3\nprowl_prio_pause_resume
+    = -3\nprowl_prio_pp = -3\nprowl_prio_complete = 0\nprowl_prio_failed = 1\nprowl_prio_disk_full
+    = 1\nprowl_prio_new_login = -3\nprowl_prio_warning = -3\nprowl_prio_error = -3\nprowl_prio_queue_done
+    = 0\nprowl_prio_other = 0\n[pushover]\npushover_token = \"\"\npushover_userkey
+    = \"\"\npushover_device = \"\"\npushover_emergency_expire = 3600\npushover_emergency_retry
+    = 60\npushover_enable = 0\npushover_cats = *,\npushover_prio_startup = -3\npushover_prio_download
+    = -2\npushover_prio_pause_resume = -2\npushover_prio_pp = -3\npushover_prio_complete
+    = -1\npushover_prio_failed = -1\npushover_prio_disk_full = 1\npushover_prio_new_login
+    = -3\npushover_prio_warning = 1\npushover_prio_error = 1\npushover_prio_queue_done
+    = -1\npushover_prio_other = -1\n[pushbullet]\npushbullet_enable = 0\npushbullet_cats
+    = *,\npushbullet_apikey = \"\"\npushbullet_device = \"\"\npushbullet_prio_startup
+    = 0\npushbullet_prio_download = 0\npushbullet_prio_pause_resume = 0\npushbullet_prio_pp
+    = 0\npushbullet_prio_complete = 1\npushbullet_prio_failed = 1\npushbullet_prio_disk_full
+    = 1\npushbullet_prio_new_login = 0\npushbullet_prio_warning = 0\npushbullet_prio_error
+    = 0\npushbullet_prio_queue_done = 0\npushbullet_prio_other = 1\n[nscript]\nnscript_enable
+    = 0\nnscript_cats = *,\nnscript_script = \"\"\nnscript_parameters = \"\"\nnscript_prio_startup
+    = 1\nnscript_prio_download = 0\nnscript_prio_pause_resume = 0\nnscript_prio_pp
+    = 0\nnscript_prio_complete = 1\nnscript_prio_failed = 1\nnscript_prio_disk_full
+    = 1\nnscript_prio_new_login = 0\nnscript_prio_warning = 0\nnscript_prio_error
+    = 0\nnscript_prio_queue_done = 1\nnscript_prio_other = 1\n"
+kind: ConfigMap
+metadata:
+  name: init-sabnzbd-cm
+  namespace: default

@@ -1,0 +1,18 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: jellyseerr
+  namespace: default
+  annotations: 
+    kubernetes.io/ingress.class: traefik-external
+spec:
+  entryPoints: 
+    - websecure
+  routes:
+    - match: Host(`jellyseerr.local.izroll.dev`)
+      kind: Rule
+      services:
+        - name: jellyseerr
+          port: 5055
+  tls:
+    secretName: local-izroll-dev-tls

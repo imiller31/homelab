@@ -1,0 +1,11 @@
+apiVersion: v1
+data:
+  PGID: "1000"
+  PUID: "1000"
+kind: ConfigMap
+metadata:
+  annotations:
+    meta.helm.sh/release-name: k8smediaserver-sample
+    meta.helm.sh/release-namespace: default
+  name: sonarr-config
+  namespace: default

@@ -1,0 +1,43 @@
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    meta.helm.sh/release-name: k8smediaserver-sample
+    meta.helm.sh/release-namespace: default
+  creationTimestamp: "2023-07-16T03:07:34Z"
+  labels:
+    app.kubernetes.io/instance: k8smediaserver-sample
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: k8s-mediaserver
+    app.kubernetes.io/version: 1.16.0
+    helm.sh/chart: k8s-mediaserver-0.7.0
+  name: transmission
+  namespace: default
+  ownerReferences:
+  - apiVersion: charts.kubealex.com/v1
+    blockOwnerDeletion: true
+    controller: true
+    kind: K8SMediaserver
+    name: k8smediaserver-sample
+    uid: f52bdd6a-8840-4acc-9309-f004c4e68b14
+  resourceVersion: "486573"
+  uid: e1de3361-b42d-4f5b-8db0-83c545ea6408
+spec:
+  clusterIP: 10.43.47.147
+  clusterIPs:
+  - 10.43.47.147
+  internalTrafficPolicy: Cluster
+  ipFamilies:
+  - IPv4
+  ipFamilyPolicy: SingleStack
+  ports:
+  - name: trans-port
+    port: 9091
+    protocol: TCP
+    targetPort: 9091
+  selector:
+    app: transmission
+  sessionAffinity: None
+  type: ClusterIP
+status:
+  loadBalancer: {}

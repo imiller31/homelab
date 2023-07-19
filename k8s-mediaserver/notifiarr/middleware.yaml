@@ -1,0 +1,14 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: traefik-notifiarr
+  namespace: default
+spec:
+  webauthheader:
+    plugin:
+      htransformation:
+      Rules:
+        - Name: 'Auth header rename'
+          Header: 'Remote-User'
+          Value: 'X-WebAuth-User'
+          Type: 'Rename'

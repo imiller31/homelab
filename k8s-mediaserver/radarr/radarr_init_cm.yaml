@@ -1,0 +1,32 @@
+apiVersion: v1
+data:
+  config.xml: |
+    <Config>
+      <UrlBase>/radarr</UrlBase>
+    </Config>
+  init-radarr.sh: |
+    #!/bin/bash
+    echo "### Initializing config ###"
+    if [ ! -f /radarr-config/config.xml ]; then
+      cp -n /init-radarr/config.xml /radarr-config/config.xml
+      echo "### No configuration found, intialized with default settings ###"
+    fi
+kind: ConfigMap
+metadata:
+  annotations:
+    meta.helm.sh/release-name: k8smediaserver-sample
+    meta.helm.sh/release-namespace: default
+  creationTimestamp: "2023-07-16T03:07:34Z"
+  labels:
+    app.kubernetes.io/managed-by: Helm
+  name: init-radarr-cm
+  namespace: default
+  ownerReferences:
+  - apiVersion: charts.kubealex.com/v1
+    blockOwnerDeletion: true
+    controller: true
+    kind: K8SMediaserver
+    name: k8smediaserver-sample
+    uid: f52bdd6a-8840-4acc-9309-f004c4e68b14
+  resourceVersion: "486529"
+  uid: 9fca5c43-dd8d-439e-9e64-f4f227203c54

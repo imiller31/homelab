@@ -1,0 +1,15 @@
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: lab-izroll-dev
+  namespace: default
+spec:
+  secretName: lab-izroll-dev-tls
+  issuerRef:
+    name: letsencrypt-production
+    kind: ClusterIssuer
+  commonName: "*.lab.izroll.dev"
+  dnsNames:
+  - "lab.izroll.dev"
+  - "*.lab.izroll.dev"

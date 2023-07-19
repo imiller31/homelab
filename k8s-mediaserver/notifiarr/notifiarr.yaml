@@ -1,0 +1,43 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: notifiarr-external
+  namespace: default
+spec:
+  type: ExternalName
+  # FQDN of the external API
+  externalName: 66.66.0.66
+  ports:
+    - port: 5454
+  selector:
+    app.kubernetess.io/instance: traefik
+    app.kubernetes.io/name: traefik
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: notifiarr
+  namespace: default
+  annotations: 
+    kubernetes.io/ingress.class: traefik-external
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`www.notifiarr.lab.izroll.dev`)
+      kind: Rule
+      services:
+        - name: notifiarr-external
+          port: 5454
+      middlewares:
+        - name: default-headers
+    - match: Host(`notifiarr.lab.izroll.dev`)
+      kind: Rule
+      services:
+        - name: notifiarr-external
+          port: 5454
+      middlewares:
+        - name: default-headers
+  tls:
+    secretName: lab-izroll-dev-tls

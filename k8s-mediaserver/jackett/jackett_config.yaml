@@ -1,0 +1,23 @@
+apiVersion: v1
+data:
+  PGID: "1000"
+  PUID: "1000"
+kind: ConfigMap
+metadata:
+  annotations:
+    meta.helm.sh/release-name: k8smediaserver-sample
+    meta.helm.sh/release-namespace: default
+  creationTimestamp: "2023-07-16T03:07:34Z"
+  labels:
+    app.kubernetes.io/managed-by: Helm
+  name: jackett-config
+  namespace: default
+  ownerReferences:
+  - apiVersion: charts.kubealex.com/v1
+    blockOwnerDeletion: true
+    controller: true
+    kind: K8SMediaserver
+    name: k8smediaserver-sample
+    uid: f52bdd6a-8840-4acc-9309-f004c4e68b14
+  resourceVersion: "486521"
+  uid: 4529a6a6-c907-465a-9818-79303d870092

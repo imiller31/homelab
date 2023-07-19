@@ -1,0 +1,43 @@
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    meta.helm.sh/release-name: k8smediaserver-sample
+    meta.helm.sh/release-namespace: default
+  creationTimestamp: "2023-07-16T03:07:34Z"
+  labels:
+    app.kubernetes.io/instance: k8smediaserver-sample
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: k8s-mediaserver
+    app.kubernetes.io/version: 1.16.0
+    helm.sh/chart: k8s-mediaserver-0.7.0
+  name: jackett
+  namespace: default
+  ownerReferences:
+  - apiVersion: charts.kubealex.com/v1
+    blockOwnerDeletion: true
+    controller: true
+    kind: K8SMediaserver
+    name: k8smediaserver-sample
+    uid: f52bdd6a-8840-4acc-9309-f004c4e68b14
+  resourceVersion: "486561"
+  uid: 842d1a5b-ce16-46df-bd0a-5950cb731779
+spec:
+  clusterIP: 10.43.123.178
+  clusterIPs:
+  - 10.43.123.178
+  internalTrafficPolicy: Cluster
+  ipFamilies:
+  - IPv4
+  ipFamilyPolicy: SingleStack
+  ports:
+  - name: jackett-port
+    port: 9117
+    protocol: TCP
+    targetPort: 9117
+  selector:
+    app: jackett
+  sessionAffinity: None
+  type: ClusterIP
+status:
+  loadBalancer: {}

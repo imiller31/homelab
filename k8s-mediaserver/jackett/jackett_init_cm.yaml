@@ -1,0 +1,32 @@
+apiVersion: v1
+data:
+  ServerConfig.json: |
+    {
+      "BasePathOverride": "/jackett"
+    }
+  init-jackett.sh: |
+    #!/bin/bash
+    echo "### Initializing config ###"
+    if [ ! -f /jackett-config/ServerConfig.json ]; then
+      cp -n /init-jackett/ServerConfig.json /jackett-config/ServerConfig.json
+      echo "### No configuration found, intialized with default settings ###"
+    fi
+kind: ConfigMap
+metadata:
+  annotations:
+    meta.helm.sh/release-name: k8smediaserver-sample
+    meta.helm.sh/release-namespace: default
+  creationTimestamp: "2023-07-16T03:07:34Z"
+  labels:
+    app.kubernetes.io/managed-by: Helm
+  name: init-jackett-cm
+  namespace: default
+  ownerReferences:
+  - apiVersion: charts.kubealex.com/v1
+    blockOwnerDeletion: true
+    controller: true
+    kind: K8SMediaserver
+    name: k8smediaserver-sample
+    uid: f52bdd6a-8840-4acc-9309-f004c4e68b14
+  resourceVersion: "486522"
+  uid: edba5634-69bd-4712-a3a9-18245fb1251f
